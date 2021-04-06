@@ -49,7 +49,8 @@ class CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Take a picture')),
-      body: Center(
+      body: AspectRatio(
+        aspectRatio: _controller.value.aspectRatio,
         child: CameraPreview(_controller),
       ),
       floatingActionButton: FloatingActionButton(
