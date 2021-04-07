@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_test_camera/pages/home_page.dart';
-import 'package:flutter_test_camera/pages/camera_page.dart';
+import 'package:flutter_test_camera/pages/take_picture.dart';
 
 main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Test Camera',
       routes: {
         '/home': (BuildContext context) => HomePage(),
-        '/camera': (BuildContext context) => CameraPage()
+        '/camera': (BuildContext context) => TakePicture()
       },
       theme: ThemeData(
         brightness: Brightness.dark,
