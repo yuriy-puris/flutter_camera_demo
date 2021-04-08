@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'camera_page.dart';
+import 'picture_page.dart';
 
 
 class TakePicture extends StatefulWidget {
@@ -16,34 +18,28 @@ class TakePictureState extends State<TakePicture> {
   List<CameraDescription> cameras;
   CameraController _controller;
   Future<void> _initializeControllerFuture;
+  File imageFile;
+  String imagePath;
+  PickedFile pickedFile;
 
   @override
   void initState() {
     super.initState();
+    pickedFile = null;
     _getAvailableCameras();
   }
 
   @override
   void dispose() {
-    // Dispose of the controller when the widget is disposed.
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _controller != null
-          ? _initializeControllerFuture = _controller.initialize()
-          : null; //on pause camera disposed so we need call again "issue is only for android"
-    }
   }
 
   Future<void> _getAvailableCameras() async {
     try {
       cameras = await availableCameras();
       _controller = CameraController(cameras[1], ResolutionPreset.medium);
-      _controller.initialize().then((_) {
+      _controller?.initialize().then((_) {
         if (!mounted) {
           return;
         }
@@ -54,16 +50,58 @@ class TakePictureState extends State<TakePicture> {
     }
   }
 
-  Future<void> onWillPop() async {
-    print('will');
+  _getFromGallery(context) async {
+    PickedFile pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imagePath = pickedFile.path;
+        imageFile = File(pickedFile.path);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
+      });
+    }
+  }
+
+  _getFromCamera(context) async {
+    PickedFile pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imagePath = pickedFile.path;
+        imageFile = File(pickedFile.path);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
+      });
+    }
   }
   
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(title: Text('Take a picture')),
+      appBar: AppBar(
+        title: Text(
+          'Take a picture', 
+          style: TextStyle(
+              color: Colors.white
+          )),
+      ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.blue,
+              Colors.black26,
+            ],
+          )
+        ),
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,12 +118,15 @@ class TakePictureState extends State<TakePicture> {
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
                     child: FlatButton(
-                      onPressed: () {}, 
+                      onPressed: () {
+                        _getFromGallery(context);
+                      }, 
                       child: Icon(
                         Icons.image_search_sharp,
                         color: Theme.of(context).primaryColor,
                         size: 50,
                       ),
+                      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                     )
                   ),
                   Text('Your photos')
@@ -101,7 +142,7 @@ class TakePictureState extends State<TakePicture> {
                     child: Stack(
                       children: <Widget>[
                         RotatedBox(
-                          quarterTurns: MediaQuery.of(context).orientation == Orientation.landscape ? 3 : 1,
+                          quarterTurns: MediaQuery.of(context).orientation == Orientation.landscape ? 3 : 0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(200),
                             child: OverflowBox(
@@ -111,9 +152,7 @@ class TakePictureState extends State<TakePicture> {
                                 child: Container(
                                   width: size,
                                   height: size,
-                                  child: CameraPreview(
-                                    _controller
-                                  ),
+                                  child: _controller != null ? CameraPreview(_controller) : Container(),
                                 ),
                               ),
                             ),
@@ -125,12 +164,14 @@ class TakePictureState extends State<TakePicture> {
                             opacity: 1,
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()));
-                              }, 
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()));
+                                _getFromCamera(context);
+                              },
                               child: Icon(
                                 Icons.camera_alt_outlined,
                                 color: Colors.white,
                               ),
+                              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                             )
                           ),
                         ),
@@ -144,22 +185,6 @@ class TakePictureState extends State<TakePicture> {
           )
         ),
       ),
-    );
-  }
-}
-
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Display the Picture')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
     );
   }
 }
