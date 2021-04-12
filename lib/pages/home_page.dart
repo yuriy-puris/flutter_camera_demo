@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test_camera/pages/face_check.dart';
 
 import 'take_picture.dart';
 import 'register_page.dart';
@@ -53,46 +54,63 @@ class HomePageState extends State<HomePage> {
             )
           ),
           child: Center(
-            // child: Column(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     Container(
-            //       decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(250),
-            //               border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
-            //       child: FlatButton(
-            //         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TakePicture())),
-            //         child: Icon(
-            //             Icons.photo_camera,
-            //             color: Theme.of(context).primaryColor,
-            //             size: 100,
-            //         ),
-            //       ),
+            child: Wrap(
+              direction: Axis.vertical,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      constraints: BoxConstraints(minWidth: 80, maxWidth: 200),
+                      height: 170,
+                      // decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(100),
+                      //         border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+                      child: FlatButton(
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TakePicture())),
+                        child: Icon(
+                            Icons.photo_camera,
+                            color: Theme.of(context).primaryColor,
+                            size: 100,
+                        ),
+                        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                      ),
+                    ),
+                    Container(
+                      constraints: BoxConstraints(minWidth: 80, maxWidth: 200),
+                      height: 170,
+                      // decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(100),
+                      //         border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+                      child: FlatButton(
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FaceCheck())),
+                        child: Icon(
+                            Icons.face_outlined,
+                            color: Theme.of(context).primaryColor,
+                            size: 100,
+                        ),
+                        shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )
+            // child: Container(
+            //   width: 170,
+            //   height: 170,
+            //   decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(100),
+            //           border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+            //   child: FlatButton(
+            //     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TakePicture())),
+            //     child: Icon(
+            //         Icons.photo_camera,
+            //         color: Theme.of(context).primaryColor,
+            //         size: 100,
             //     ),
-            //     Text(
-            //       'Take a photo',
-            //       style: TextStyle(
-            //         fontSize: 25
-            //       )
-            //     )
-            //   ],
-            // )
-            child: Container(
-              width: 170,
-              height: 170,
-              decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
-              child: FlatButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TakePicture())),
-                child: Icon(
-                    Icons.photo_camera,
-                    color: Theme.of(context).primaryColor,
-                    size: 100,
-                ),
-                shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-              ),
-            ),
+            //     shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+            //   ),
+            // ),
           ),
         ),
       )

@@ -16,6 +16,9 @@ class _DisplayPictureState extends State<DisplayPicture> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          color: Colors.white
+        ),
         title: Text(
           'Display the Picture',
           style: TextStyle(

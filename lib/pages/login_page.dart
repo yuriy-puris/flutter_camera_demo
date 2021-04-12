@@ -88,6 +88,9 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: BackButton(
+            color: Colors.white
+          ),
           title: Text(
             'Login',
             style: TextStyle(

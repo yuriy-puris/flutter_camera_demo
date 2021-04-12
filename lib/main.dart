@@ -6,9 +6,12 @@ import 'package:flutter_test_camera/pages/home_page.dart';
 import 'package:flutter_test_camera/pages/take_picture.dart';
 import 'package:flutter_test_camera/pages/register_page.dart';
 import 'package:flutter_test_camera/pages/login_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-main() {
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 

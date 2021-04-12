@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +84,9 @@ class TakePictureState extends State<TakePicture> {
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          color: Colors.white
+        ),
         title: Text(
           'Take a picture', 
           style: TextStyle(

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1061867778667",
+    "firebase_url": "https://fir-flutter-detection-default-rtdb.firebaseio.com",
+    "project_id": "fir-flutter-detection",
+    "storage_bucket": "fir-flutter-detection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061867778667:android:99668f8856e4d5ae87372e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_test_camera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061867778667-6h68a88kg872cl1958pgbms5r5e7fqvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWGhS2a2jO2c6PkCFEoYBWS7Hw37iLx_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061867778667-6h68a88kg872cl1958pgbms5r5e7fqvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
