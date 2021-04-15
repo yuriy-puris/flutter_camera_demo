@@ -74,6 +74,7 @@ class TakePictureState extends State<TakePicture> {
       setState(() {
         imagePath = pickedFile.path;
         imageFile = File(pickedFile.path);
+        _controller?.dispose();
         Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
       });
     }

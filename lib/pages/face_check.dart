@@ -23,8 +23,7 @@ class _FaceCheckState extends State<FaceCheck> {
 
   _getImage() async {
     final imageFile = await picker.getImage(
-      source: ImageSource.gallery, 
-      imageQuality: 25,
+      source: ImageSource.gallery,
       maxHeight: 400, 
       maxWidth: 400
     );
@@ -64,6 +63,14 @@ class _FaceCheckState extends State<FaceCheck> {
     }));
   }
 
+  _cropImage() {
+    setState(() {
+      img.Image originalImage = img.decodeImage(File(_imageFile.path).readAsBytesSync());
+      faceCrop = img.copyCrop(originalImage, 30, 30, 30, 30);
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +108,8 @@ class _FaceCheckState extends State<FaceCheck> {
                       ? Center(child: CircularProgressIndicator())
                       : (_imageFile == null)
                       ? Center(child: Text('No image selected'))
-                      : Center(
+                      : (faceCrop == null) 
+                      ? Center(
                         child: FittedBox(
                           child: SizedBox(
                             width: _image.width.toDouble(),
@@ -111,20 +119,19 @@ class _FaceCheckState extends State<FaceCheck> {
                             ),
                           ),
                         ) 
+                      )
+                      : Container(
+                        child: FittedBox(
+                          child: SizedBox(
+                            width: _image.width.toDouble(),
+                            height: _image.height.toDouble(),
+                            child: CustomPaint(
+                              // painter: CroppedImage(Image.file(faceCrop))
+                            ),
+                          ),
+                        )
                       ),
               ),
-              // Container(
-              //   child: faceCrop == null
-              //          ? Center(child: Text('No face founded'))
-              //          : Center(
-              //           child: Container(
-              //             margin: EdgeInsets.all(20),
-              //             child: Image.file(
-              //               File(img.encodePng(faceCrop)[0].toString())
-              //             ),
-              //           ),
-              //         ),
-              // ),
               Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -132,11 +139,7 @@ class _FaceCheckState extends State<FaceCheck> {
                 child: FlatButton(
                   textColor: Colors.white,
                   color: Colors.cyan,
-                  onPressed: () {
-                    print('Upload clicked');
-                    img.Image originalImage = img.decodeImage(File(_imageFile.path).readAsBytesSync());
-                    img.Image faceCrop = img.copyCrop(originalImage, faceMaps[0]['x'], faceMaps[0]['y'], faceMaps[0]['w'], faceMaps[0]['h']);
-                  },
+                  onPressed: _cropImage,
                   child: Text('Crop image'),
                 ),
               )
@@ -181,4 +184,26 @@ class FacePainter extends CustomPainter {
   bool shouldRepaint(FacePainter old) {
     return image != old.image || faces != old.faces;
   }
+}
+
+class CroppedImage extends CustomPainter {
+  final ui.Image image;
+
+  CroppedImage(this.image);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawImageRect(
+      image,
+      Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      Paint(),
+    );
+  }
+
+  @override
+  bool shouldRepaint(CroppedImage oldDelegate) {
+    return image != oldDelegate.image;
+  }
+
 }
