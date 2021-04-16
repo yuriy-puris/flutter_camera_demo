@@ -62,9 +62,6 @@ class HomePageState extends State<HomePage> {
                     Container(
                       constraints: BoxConstraints(minWidth: 80, maxWidth: 200),
                       height: 170,
-                      // decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(100),
-                      //         border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
                       child: FlatButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TakePicture())),
                         child: Icon(
@@ -78,9 +75,6 @@ class HomePageState extends State<HomePage> {
                     Container(
                       constraints: BoxConstraints(minWidth: 80, maxWidth: 200),
                       height: 170,
-                      // decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(100),
-                      //         border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
                       child: FlatButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => FaceCheck())),
                         child: Icon(

@@ -12,6 +12,21 @@ class DisplayPicture extends StatefulWidget {
 
 class _DisplayPictureState extends State<DisplayPicture> {
 
+  static final String endpoint = '';
+  Future<File> file;
+  String status = '';
+  String base64Image = '';
+  String errorMessage = 'Error Uploading Image';
+
+  setStatus(String message) {
+    setState(() {
+      status = message;
+    });
+  }
+
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

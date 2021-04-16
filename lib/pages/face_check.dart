@@ -23,8 +23,9 @@ class _FaceCheckState extends State<FaceCheck> {
 
   _getImage() async {
     final imageFile = await picker.getImage(
-      source: ImageSource.gallery,
-      maxHeight: 400, 
+      source: ImageSource.camera,
+      imageQuality: 100,
+      maxHeight: 400,
       maxWidth: 400
     );
 

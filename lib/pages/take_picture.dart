@@ -25,29 +25,29 @@ class TakePictureState extends State<TakePicture> {
   void initState() {
     super.initState();
     pickedFile = null;
-    _getAvailableCameras();
+    // _getAvailableCameras();
   }
 
-  @override
-  void dispose() {
-    _controller?.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller?.dispose();
+  //   super.dispose();
+  // }
 
-  Future<void> _getAvailableCameras() async {
-    try {
-      cameras = await availableCameras();
-      _controller = CameraController(cameras[1], ResolutionPreset.medium);
-      _controller?.initialize().then((_) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {});
-      });
-    } catch (e) {
-      print("_getAvailableCameras $e");
-    }
-  }
+  // Future<void> _getAvailableCameras() async {
+  //   try {
+  //     cameras = await availableCameras();
+  //     _controller = CameraController(cameras[1], ResolutionPreset.medium);
+  //     _controller?.initialize().then((_) {
+  //       if (!mounted) {
+  //         return;
+  //       }
+  //       setState(() {});
+  //     });
+  //   } catch (e) {
+  //     print("_getAvailableCameras $e");
+  //   }
+  // }
 
   _getFromGallery(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
@@ -74,7 +74,6 @@ class TakePictureState extends State<TakePicture> {
       setState(() {
         imagePath = pickedFile.path;
         imageFile = File(pickedFile.path);
-        _controller?.dispose();
         Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
       });
     }
@@ -115,8 +114,8 @@ class TakePictureState extends State<TakePicture> {
                   Container(
                     margin: EdgeInsets.all(20),
                     padding: EdgeInsets.all(10),
-                    width: 100,
-                    height: 100,
+                    width: 120,
+                    height: 120,
                     decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
                           border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
@@ -140,46 +139,23 @@ class TakePictureState extends State<TakePicture> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.all(20),
-                    width: 100,
-                    height: 100,
-                    child: Stack(
-                      children: <Widget>[
-                        RotatedBox(
-                          quarterTurns: MediaQuery.of(context).orientation == Orientation.landscape ? 3 : 0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200),
-                            child: OverflowBox(
-                              alignment: Alignment.center,
-                              child: FittedBox(
-                                fit: BoxFit.fitHeight,
-                                child: Container(
-                                  width: size,
-                                  height: size,
-                                  child: _controller != null ? CameraPreview(_controller) : Container(),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        new Positioned.fill(
-                          top: 55,
-                          child: new Opacity(
-                            opacity: 1,
-                            child: FlatButton(
-                              onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()));
-                                _getFromCamera(context);
-                              },
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Colors.white,
-                              ),
-                              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                            )
-                          ),
-                        ),
-                      ],
-                    ),
+                    padding: EdgeInsets.all(10),
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+                    child: FlatButton(
+                      onPressed: () {
+                        _getFromCamera(context);
+                      }, 
+                      child: Icon(
+                        Icons.photo_camera,
+                        color: Theme.of(context).primaryColor,
+                        size: 50,
+                      ),
+                      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                    )
                   ),
                   Text('Camera')
                 ],
