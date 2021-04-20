@@ -1,14 +1,10 @@
 import 'dart:io';
-import 'package:path/path.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'camera_page.dart';
 import 'picture_page.dart';
 
-
 class TakePicture extends StatefulWidget {
-
   @override
   TakePictureState createState() => TakePictureState();
 }
@@ -59,7 +55,10 @@ class TakePictureState extends State<TakePicture> {
       setState(() {
         imagePath = pickedFile.path;
         imageFile = File(pickedFile.path);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DisplayPicture(image: imagePath)));
       });
     }
   }
@@ -74,95 +73,92 @@ class TakePictureState extends State<TakePicture> {
       setState(() {
         imagePath = pickedFile.path;
         imageFile = File(pickedFile.path);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPicture(imagePath: imagePath)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DisplayPicture(image: imagePath)));
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          color: Colors.white
-        ),
-        title: Text(
-          'Take a picture', 
-          style: TextStyle(
-              color: Colors.white
-          )),
+        leading: BackButton(color: Colors.white),
+        title: Text('Take a picture', style: TextStyle(color: Colors.white)),
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.blue,
-              Colors.black26,
-            ],
-          )
-        ),
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.blue,
+            Colors.black26,
+          ],
+        )),
         child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
                     margin: EdgeInsets.all(20),
                     padding: EdgeInsets.all(10),
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).primaryColor)),
                     child: FlatButton(
                       onPressed: () {
                         _getFromGallery(context);
-                      }, 
+                      },
                       child: Icon(
                         Icons.image_search_sharp,
                         color: Theme.of(context).primaryColor,
                         size: 50,
                       ),
-                      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    )
-                  ),
-                  Text('Your photos')
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
+                      shape: CircleBorder(
+                          side: BorderSide(color: Colors.transparent)),
+                    )),
+                Text('Your photos')
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
                     margin: EdgeInsets.all(20),
                     padding: EdgeInsets.all(10),
                     width: 120,
                     height: 120,
                     decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 2, color: Theme.of(context).primaryColor)),
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).primaryColor)),
                     child: FlatButton(
                       onPressed: () {
                         _getFromCamera(context);
-                      }, 
+                      },
                       child: Icon(
                         Icons.photo_camera,
                         color: Theme.of(context).primaryColor,
                         size: 50,
                       ),
-                      shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    )
-                  ),
-                  Text('Camera')
-                ],
-              )
-            ],
-          )
-        ),
+                      shape: CircleBorder(
+                          side: BorderSide(color: Colors.transparent)),
+                    )),
+                Text('Camera')
+              ],
+            )
+          ],
+        )),
       ),
     );
   }
