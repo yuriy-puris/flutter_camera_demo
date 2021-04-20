@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:tflite/tflite.dart';
 
 class DisplayPicture extends StatefulWidget {
   final dynamic image;
@@ -16,6 +17,43 @@ class _DisplayPictureState extends State<DisplayPicture> {
   String status = '';
   String base64Image = '';
   String errorMessage = 'Error Uploading Image';
+
+  List _result;
+  String _confidence = '';
+  String _name = '';
+  String numbers = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadModel();
+  }
+
+  loadModel() async {
+    var resultLoad = await Tflite.loadModel(
+        labels: 'assets/labels.txt', model: 'assets/model_unquant.tflite');
+    print('result: $resultLoad');
+    applyModelOnImage(widget.image);
+  }
+
+  applyModelOnImage(String image) async {
+    var resultRun = await Tflite.runModelOnImage(
+        path: image,
+        numResults: 2,
+        threshold: 0.5,
+        imageMean: 127.5,
+        imageStd: 127.5);
+
+    setState(() {
+      _result = resultRun;
+      String str = _result[0]['label'];
+      _name = str.substring(2);
+      _confidence = _result != null
+          ? (_result[0]['confidence'] * 100.0).toString().substring(0, 2) + '%'
+          : '';
+      print('$_name, $_confidence');
+    });
+  }
 
   setStatus(String message) {
     setState(() {
@@ -69,6 +107,7 @@ class _DisplayPictureState extends State<DisplayPicture> {
                     //   )),
                     // )
                   ),
+                  Text('$_name \nConfidence: $_confidence'),
                   Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),

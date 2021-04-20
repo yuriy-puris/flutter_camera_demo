@@ -66,6 +66,7 @@ class TakePictureState extends State<TakePicture> {
   _getFromCamera(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
       maxWidth: 1800,
       maxHeight: 1800,
     );
